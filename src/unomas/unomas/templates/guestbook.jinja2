@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Guestbook Example</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <meta name="keywords" content="gae python web application" />
+  <meta name="description" content="pyramid web demo application on GAE" />
+  <link rel="shortcut icon" href="{{request.application_url}}/static/favicon.ico" />
+  <link type="text/css" rel="stylesheet" href="{{request.application_url }}/static/main.css" />
+  
+  <!--[if lte IE 6]>
+  <link rel="stylesheet" href="{{request.application_url}}/static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+  <![endif]-->
+</head>
+<body>
+  <div id="wrap">
+      <div id="top">
+        <div class="top align-center">
+          <div><img src="{{request.application_url}}/static/pyramid_ae.png" width="750" height="169" alt="pyramid"/></div>
+        </div>
+      </div>
+     <div id="middle">
+      <div class="middle align-center">
+          {% autoescape true %} 
+          {% for greeting in greetings %} 
+             {% if greeting.author %} 
+                 {{ greeting.author.nickname() }} wrote: 
+             {% else %} 
+                 An anonymous person wrote: 
+             {% endif %}
+             <blockquote>{{ greeting.content }}</blockquote>
+          {% endfor %}
+          
+          <form action="/guestbook" method="post">
+             <div><textarea name="content" rows="3" cols="60"></textarea></div>
+             <div><input type="submit" value="Sign Guestbook"></div>
+           </form>
+
+          <a href="{{ url|safe }}">{{ url_linktext }}</a>
+          {% endautoescape %}      
+      </div>
+      <div id="bottom"></div>
+    </div>
+   </div>
+   <div id="footer"></div>
+ </body>
+</html>

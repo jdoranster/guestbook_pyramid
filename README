@@ -1,0 +1,11 @@
+Pyramid appengine Guestbook aka unomas
+
+This is a mashup of the Google Appengine Gues=tbook example program https://github.com/GoogleCloudPlatform/appengine-guestbook-python with the Pyramid appengine https://pypi.python.org/pypi/pyramid_appengine.
+
+Some expectations about how this code is setup:
+
+1. Runs in a virtualenv
+2. Runs buildout & bootstrap.py as described in the pyramid_appengine page.
+3. Tests are run via ../../bin/python setup.py test 
+4. buildout is your friend to upate parts/ from src/ when files are added.
+

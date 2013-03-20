@@ -1,0 +1,6 @@
+eggs/
+parts/
+*.pyc
+*.DS_Store
+bin/
+develop-eggs/

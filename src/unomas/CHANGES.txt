@@ -1,0 +1,4 @@
+0.0
+---
+
+-  Initial version containing the Google Guestbook python app for appengine.
