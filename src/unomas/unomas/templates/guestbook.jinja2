@@ -7,10 +7,39 @@
   <meta name="description" content="pyramid web demo application on GAE" />
   <link rel="shortcut icon" href="{{request.application_url}}/static/favicon.ico" />
   <link type="text/css" rel="stylesheet" href="{{request.application_url }}/static/main.css" />
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   
   <!--[if lte IE 6]>
   <link rel="stylesheet" href="{{request.application_url}}/static/ie6.css" type="text/css" media="screen" charset="utf-8" />
   <![endif]-->
+  
+  <script>
+      $(document).ready(function()
+      {
+          /* attach a submit handler to the form */
+          $("#guestForm").submit(function(event) {
+
+            /* stop form from submitting normally */
+            event.preventDefault();
+
+            /* get some values from elements on the page: */
+            var $form = $( this ),
+                term = $form.find( 'textarea[name="content"]' ).val(),
+                url = $form.attr( 'action' );
+
+            /* Send the data using post */
+            var posting = $.post( url, { content: term } );
+
+            /* Put the results in a div */
+            posting.done(function( data ) {
+              debugger;
+              var content = data ['greeting'];
+              var cur_user = data['user'];
+              $( "#greetings").prepend(cur_user + " wrote:<blockquote>" + content + "</blockquote>")
+            });
+          });       	   
+      });
+  </script>
 </head>
 <body>
   <div id="wrap">
@@ -22,6 +51,14 @@
      <div id="middle">
       <div class="middle align-center">
           {% autoescape true %} 
+          <form id='guestForm'  action="/guestbook" method="post">
+              <div><textarea name="content" rows="3" cols="60"></textarea></div>
+              <div><input type="submit" value="Sign Guestbook"></div>
+            </form>
+
+           <a href="{{ url|safe }}">{{ url_linktext }}</a>
+          
+          <div id='greetings'>
           {% for greeting in greetings %} 
              {% if greeting.author %} 
                  {{ greeting.author.nickname() }} wrote: 
@@ -30,18 +67,14 @@
              {% endif %}
              <blockquote>{{ greeting.content }}</blockquote>
           {% endfor %}
+          </div>
           
-          <form action="/guestbook" method="post">
-             <div><textarea name="content" rows="3" cols="60"></textarea></div>
-             <div><input type="submit" value="Sign Guestbook"></div>
-           </form>
-
-          <a href="{{ url|safe }}">{{ url_linktext }}</a>
-          {% endautoescape %}      
+           {% endautoescape %}      
       </div>
       <div id="bottom"></div>
     </div>
    </div>
    <div id="footer"></div>
+
  </body>
 </html>

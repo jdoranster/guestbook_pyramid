@@ -4,22 +4,13 @@ import jinja2
 import os
 
 from google.appengine.api import users
-from google.appengine.ext import ndb
 
+from models import Greeting, guestbook_key
 
-# We set a parent key on the 'Greetings' to ensure that they are all in the same
-# entity group. Queries across the single entity group will be consistent.
-# However, the write rate should be limited to ~1/second.
-
-def guestbook_key(guestbook_name='default_guestbook'):
-    return ndb.Key('Guestbook', guestbook_name)
-
-
-class Greeting(ndb.Model):
-    author = ndb.UserProperty()
-    content = ndb.StringProperty(indexed=False)
-    date = ndb.DateTimeProperty(auto_now_add=True)
-    
+   
+@view_config(route_name='root_view', renderer='mytemplate.jinja2', request_method='GET')
+def root_view(request):
+     return {'project':'Guestbook on pyramid_appengine'}
         
 
 @view_config(route_name='guestbook', renderer='guestbook.jinja2', request_method='GET')    
@@ -36,7 +27,7 @@ def get_guest_view(request):
 
     return {'url_linktext':url_linktext, 'url': url, 'greetings':greetings}
 
-@view_config(route_name='guestbook', renderer='guestbook.jinja2', request_method='POST')    
+@view_config(route_name='guestbook', renderer='json', request_method='POST')    
 def post_guest_view(request):
     greeting = Greeting(parent=guestbook_key())
 
@@ -45,6 +36,9 @@ def post_guest_view(request):
 
     greeting.content = request.params['content']
     greeting.put()
-    return HTTPFound(location='/guestbook')
+    user = 'An anonymous person'
+    if users.get_current_user():
+        user = users.get_current_user().nickname()
+    return {'greeting': greeting.content, 'user': user}
 
     

@@ -5,6 +5,7 @@ setup.cfg
 setup.py
 unomas/__init__.py
 unomas/conftest.py
+unomas/models.py
 unomas/pyramid_jinja2.py
 unomas/resources.py
 unomas/test_views.py

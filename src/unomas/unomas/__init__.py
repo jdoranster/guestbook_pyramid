@@ -1,5 +1,5 @@
 from pyramid.config import Configurator
-import views
+
 import pyramid_jinja2
 import os
 
@@ -11,14 +11,9 @@ def make_app():
     """
     config = Configurator()
     config.add_renderer('.jinja2', pyramid_jinja2.Jinja2Renderer)
-    #config.add_view(views.my_view,
-    #                renderer='mytemplate.jinja2',
-    #                route_name='root')
+    config.add_route('root_view', '/')
 
     config.add_route('guestbook','/guestbook')
-    #config.add_view(views.guestbook_view, 
-    #                renderer='guestbook.jinja2',
-    #                route_name='guestbook')
 
     config.add_static_view(name='static',
                            path=os.path.join(__here__, 'static'))

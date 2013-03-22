@@ -2,3 +2,8 @@
 ---
 
 -  Initial version containing the Google Guestbook python app for appengine.
+
+0.1
+---
+
+- Added ajax call to use a single page display
